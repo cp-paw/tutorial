@@ -1,0 +1,25 @@
+!STRUCTURE
+  !GENERIC LUNIT[AA]=1. !END
+  !OCCUPATIONS EMPTY=5 !END
+  !LATTICE T= 0.0 7.0 7.0
+              7.0 0.0 7.0
+              7.0 7.0 0.0 !END
+  !ATOM NAME='C_1' R= -1.22  0.20  0.20 !END
+  !ATOM NAME='C_2' R=  0.12  0.79  0.34 !END
+  !ATOM NAME='C_3' R=  1.30  0.21  0.02 !END
+  !ATOM NAME='H_4' R=  0.17  1.80  0.75 !END
+  !ATOM NAME='O_5' R= -1.41 -0.90 -0.24 !END
+  !ATOM NAME='O_6' R=  1.43 -1.02 -0.49 !END
+  !ATOM NAME='H_7' R=  2.21  0.78  0.19 !END
+  !ATOM NAME='H_8' R=  0.70 -1.62 -0.69 !END
+  !ATOM NAME='H_9' R= -2.08  0.80  0.50 !END
+  @hydrogen@
+  @carbon@
+  @oxygen@
+  !ISOLATE !END
+  !CONSTRAINTS
+    !TRANSLATION !END
+    !ROTATION !END
+  !END
+!END
+!EOB

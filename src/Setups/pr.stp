@@ -1,0 +1,10 @@
+  !SPECIES NAME='PR' NPRO=2 1 1 1 RAD/COV=1.2
+    !NTBO    NOFL=1 1 1 1 LHFWEIGHT=0.12 !END 
+    !AUGMENT ID='Praseodymium' EL='PR' CORE="-s-p"
+             TYPE='NDLSS' RBOX/RCOV=1.2 RCSM/RCOV=0.25
+             RCL/RCOV=  0.84  0.77  0.8  0.7
+      !GRID  DMIN= 1.e-6 DMAX= 0.100 RMAX= 9.000 !END
+      !POT   POW=  3.000 RC/RCOV=  0.8 val0=0.0 !END
+      !CORE  POW=  3.000 RC/RCOV=  0.8  !END
+    !END
+  !END

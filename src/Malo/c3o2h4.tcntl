@@ -1,0 +1,79 @@
+!TCNTL
+
+# atomic structure =============================================
+# --------first OH bond---------
+  !MODE ID='O5-H8'  
+    !BOND ATOM1='O_5' ATOM2='H_8' SCALE=1. !END
+  !END
+  !OUTPUT ID='O5-H8' FILENAME='o5-h8.dat' !END
+  !OUTPUT ID='O5-H8' FILENAME='o5-h8.vdat' TYPE='VELOCITY' !END
+
+#--------second OH bond---------
+  !MODE ID='O6-H8' 
+    !BOND ATOM1='O_6' ATOM2='H_8' SCALE=1. !END
+  !END
+  !OUTPUT ID='O6-H8' FILENAME='o6-h8.dat' !END
+
+#--------oo distance; H-bond length----
+  !MODE ID='O5-O6' 
+    !BOND ATOM1='O_5' ATOM2='O_6' SCALE=1. !END
+  !END
+  !OUTPUT ID='O5-O6' FILENAME='o5-o6.dat' !END
+
+#--------soliton-----------------------
+  !MODE ID='DBN'
+    !BOND ATOM1='O_5' ATOM2='C_1' scale=+1. !END
+    !BOND ATOM1='C_1' ATOM2='C_2' scale=-1. !END
+    !BOND ATOM1='C_2' ATOM2='C_3' scale=+1. !END
+    !BOND ATOM1='C_3' ATOM2='O_6' scale=-1. !END
+  !END
+  !OUTPUT ID='DBN'  FILENAME='dbn.dat' !END
+
+# temperature ==================================================
+  !TEMPERATURE RETARD[PS]=1.0
+    !FILE EXT=T NAME='_t_all.dat' !END
+  !END
+  !TEMPERATURE 
+    !FILE EXT=T NAME='_t_all_noretard.dat' !END
+  !END
+  !TEMPERATURE RETARD[PS]=1.0
+    !SELECT ATOMS='H_9' 'H_4' 'H_7' 'H_8' !END
+    !FILE EXT=T NAME='_t_h.dat' !END
+  !END
+  !TEMPERATURE RETARD[PS]=1.0
+    !SELECT ATOMS= 'C_1' 'C_2' 'C_3' !END
+    !FILE EXT=T NAME='_t_c.dat' !END
+  !END
+  !TEMPERATURE RETARD[PS]=1.0
+    !SELECT ATOMS='O_5' 'O_6' !END
+    !FILE EXT=T NAME='_t_o.dat' !END
+  !END
+
+# movie ========================================================
+   !MOVIE
+     FORMAT='xyz' SKIP=10 
+     !VIEWBOX  O= -5. -5. -5. 
+               T=10.  0.  0. 
+                  0. 10.  0. 
+                  0.  0. 10. !END   
+     !FILE EXT=T NAME='_movie.xyz' !END
+   !END
+
+# spagetti h-bond===============================================
+   !SPAGHETTI
+     !SELECT ATOMS='O_5' 'H_8' 'O_6' !END
+     !FILE EXT=T NAME='.tra.pasta' !END
+   !END
+
+# correlation h-bond============================================
+   !CORRELATION
+     !CENTER
+       !SELECT ATOMS='O_5'  'O_6' !END 
+     !END
+     !PARTNER 
+       !SELECT ATOMS='H_8'  !END 
+     !END
+     !FILE EXT=T NAME='.tra.correlation' !END
+   !END
+!END
+!EOB

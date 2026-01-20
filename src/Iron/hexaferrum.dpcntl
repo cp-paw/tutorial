@@ -1,0 +1,10 @@
+!dpcntl
+  emin[ev]=10. emax[ev]=30. ymin=-2.5 ymax=2.5  
+  !graph prefix='Dos/' scale=1.
+    !set id='total'   color='black'   !end
+    !set id='fe_eg'   color='green'  stack=F !end
+    !set id='fe_t2g'  color='yellow' stack=T !end
+    !set id='fe_sp'   color='cyan'   stack=T  !end
+  !end
+!end
+!eob

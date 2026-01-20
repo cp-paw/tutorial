@@ -1,0 +1,22 @@
+!dpcntl
+   emin[ev]=-7. emax[ev]=19. ymin=-15. ymax=20.
+
+   !graph prefix='Dos/' 
+     !set id='total' color='black' !end
+     !set id='mneg_up'  color='yellow'  stack=F !end
+     !set id='mneg_dn'  color='grey'    stack=T !end
+     !set id='mnt2g_up' color='green'   stack=T !end
+     !set id='mnt2g_dn' color='grey'    stack=T !end
+     !set id='prf_up'   color='magenta' stack=T !end
+     !set id='prf_dn'   color='grey'    stack=T !end
+     !set id='prd_up'   color='orange'  stack=T !end
+     !set id='prd_dn'   color='grey'    stack=T !end
+     !set id='os'       color='yellow'  stack=T !end
+     !set id='op'       color='red'     stack=T !end
+     !set id='prp_up'   color='cyan'  stack=T !end
+     !set id='prp_dn'   color='cyan'    stack=T !end
+     !set id='prs_up'   color='cyan'  stack=T !end
+     !set id='prs_dn'   color='cyan'    stack=T !end
+   !end
+!end
+!eob

@@ -1,0 +1,250 @@
+#!/bin/bash
+#set -v
+export THISDIR=$(pwd)
+if [[ ! $0  -ef ${THISDIR}/src/doit_iron ]] ; then
+  echo 'error in $0: must be called from parent directory'
+  exit 1
+fi
+export NCORE=14   # number of cores available
+export LOG=${THISDIR}/log
+export SRCDIR=${THISDIR}/src/Iron
+export STPIR=${THISDIR}/src/Setups
+#
+# conversion of pressure units #########################################
+Pa=$(echo "1 / (2.9421015697 * 10^13)" | bc -l)
+GPa=$(echo " 10^9 * $Pa" | bc -l)
+Bar=$(echo "$Pa * 10^5" |bc -l)
+#
+
+echo "========= new call of doit_iron at $(date)==========" >> ${LOG}
+
+## encapsulate the paw command
+function runpaw () {
+  echo "doing runpaw $ROOTNAME $1............................................."
+  echo "runpaw: doing $ROOTNAME at $(date)" >>${LOG}
+  doppaw -n ${NCORE} ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?   
+  if [[ $RC -eq 0 ]] ; then 
+    echo "runpaw: $ROOTNAME done at $(date)" >>${LOG}
+    echo "...........................................runpaw ${ROOTNAME} $1 done"
+    return
+  else
+    echo "error in runpaw: $1" 
+    exit 1
+  fi
+}
+
+function extractenthalpy() {
+    local V=$(paw_get -w volume -u a0^3 -n $ROOTNAME)
+    local E=$(paw_get -w etot   -u H -n $ROOTNAME)
+    case ${ROOTNAME} in
+      ferrite)    
+        export VOLUME_ferrite=$V
+        export ENTHALPY_ferrite=$E
+        ;;
+      hexaferrum) 
+        export VOLUME_hexaferrum=$V
+        export ENTHALPY_hexaferrum=$E
+        ;;
+      *) echo "error in $0: case not recognized"
+        exit 1
+        ;;
+    esac
+}
+
+
+##############################################################################
+## Iron (relax wave functions, unit cell, dos)
+##############################################################################
+
+#-------------------------------------------------------------------------
+if true; then
+#-------------------------------------------------------------------------
+
+for X in ferrite hexaferrum ; do
+  cd ${THISDIR}
+  export ROOTNAME=$X
+  #
+  #capitalize the first character of ${X}. ${X:0:1} is the first letter of ${X}
+  # ferrite -> Ferrite; hexaferrum -> Hexaferrum
+  export DIR=$(echo ${X:0:1} | tr '[:lower:]' '[:upper:]')${X#${X:0:1}*}
+  if [[ ! -d ${THISDIR}/$DIR ]] ; then mkdir ${THISDIR}/$DIR ; fi
+  cd ${THISDIR}/${DIR}
+  echo "firstloop: doing $ROOTNAME at $(date)" >>${LOG}
+
+  ##   relax wave functions
+  echo " relax wave functions for ${ROOTNAME} " >> ${LOG}
+  if [[ ! -d ${THISDIR}/$DIR/urlx ]] ; then mkdir ${THISDIR}/$DIR/urlx ; fi
+  cd ${THISDIR}/$DIR/urlx
+  cp ${SRCDIR}/urlx_1.cntl ${ROOTNAME}.cntl
+  # insert k-grid R=40. and setup fe.stp
+  paw_resolve -r KDIVID='R'  -r KDIVVAL='40.'  \
+              -f fe.stp=${STPDIR}/fe.stp \
+              -i ${SRCDIR}/${ROOTNAME}.strc \
+              -o ${ROOTNAME}.strc
+  runpaw 'urlx'
+  
+  ## optimize lattice constant
+  echo " optimize lattice constant for ${ROOTNAME} " >> ${LOG}
+  if [[ ! -d ${THISDIR}/$DIR/cell ]] ; then mkdir ${THISDIR}/$DIR/cell ; fi
+  cd ${THISDIR}/$DIR/cell
+  cp ${SRCDIR}/cell_1.cntl ${ROOTNAME}.cntl
+  cp ${THISDIR}/$DIR/urlx/${ROOTNAME}.strc ./
+  cp ${THISDIR}/$DIR/urlx/${ROOTNAME}.rstrt ./
+  runpaw 'cell'
+
+  ## collect data
+  ## plot density of states
+  echo " calculating dos for ${ROOTNAME} " >> ${LOG}
+  cd ${THISDIR}/$DIR/cell
+  cp ${SRCDIR}/${ROOTNAME}.dcntl  ${ROOTNAME}.dcntl
+  cp ${SRCDIR}/${ROOTNAME}.dpcntl ${ROOTNAME}.dpcntl
+  mkdir ./Dos
+  paw_dos ${ROOTNAME}.dcntl 1>dos.out 2>&1 
+  paw_dosplot ${ROOTNAME}.dpcntl 1>dosplot.out 2>&1
+  gracebat -nosafe -hdevice PNG -batch $X.bat -hardcopy \
+           -printfile $ROOTNAME_dos.png
+  ##
+  ## construct sprot file and structure files for viewing
+  echo " calculating structure for ${ROOTNAME} " >> ${LOG}
+  paw_strc -c ${ROOTNAME} 
+  cd ${THISDIR}
+done
+echo "firstloopdone at $(date)" >>${LOG}
+
+#-------------------------------------------------------------------------
+fi
+#-------------------------------------------------------------------------
+
+#
+##############################################################################
+## Transition pressure
+##############################################################################
+
+#-------------------------------------------------------------------------
+if true; then
+#-------------------------------------------------------------------------
+echo "doing transition pressure..................." >>${LOG}
+
+echo " collect data from cell-run...."
+for X in ferrite hexaferrum ; do
+  cd ${THISDIR}
+  export ROOTNAME=$X
+  #
+  # capitalize the first character of ${X}. ${X:0:1} is frst letter of ${X}
+  # ferrite -> Ferrite; hexaferrum -> Hexaferrum
+  export DIR=$(echo ${X:0:1} | tr '[:lower:]' '[:upper:]')${X#${X:0:1}*}
+
+  if  [[ ! -d ${THISDIR}/$DIR/cell ]] ; then
+    echo "error in $0: cell directory not found"
+    echo "error in $0: ${THISDIR}/$DIR/cell"
+    exit 1
+  fi
+  cd ${THISDIR}/$DIR/cell
+  extractenthalpy    # define VOLUME_$ROOTNAME and ENTHALPY_$ROOTNAME 
+
+  # place restart file into subdirectory "transition"
+  if  [[ ! -d ${THISDIR}/$DIR/transition ]] ; then
+    mkdir ${THISDIR}/$DIR/transition 
+  fi
+  cp ${ROOTNAME}.prot  ${THISDIR}/$DIR/transition/
+  cp ${ROOTNAME}.strc  ${THISDIR}/$DIR/transition/
+  cp ${ROOTNAME}.rstrt  ${THISDIR}/$DIR/transition/
+  cd ${THISDIR}
+done
+echo ".....data from cell-run collected"
+
+PRESSURE=0
+# variables defined earlier by extractenthalpy
+for Y in 1 2 3 4 ; do
+  echo "$Y: old pressure: P=$PRESSURE " >> ${LOG}
+  echo "$Y: H(ferrite)   =$ENTHALPY_ferrite  " >> ${LOG}
+  echo "$Y: H(hexaferrum)=$ENTHALPY_hexaferrum " >> ${LOG}
+  echo "$Y: V(ferrite)   =$VOLUME_ferrite  " >> ${LOG}
+  echo "$Y: V(hexaferrum)=$VOLUME_hexaferrum " >> ${LOG}
+
+  PRESSURE=$(echo "$PRESSURE \
+     - ( $ENTHALPY_hexaferrum / 2 - $ENTHALPY_ferrite ) \
+     / ( $VOLUME_hexaferrum / 2 - $VOLUME_ferrite )" | bc -l)
+  echo "$Y: new P=$PRESSURE=$(echo "$PRESSURE / $GPa" | bc -l) GPa "\
+        >> ${LOG}
+
+  for X in ferrite hexaferrum ; do
+    cd ${THISDIR}
+    export ROOTNAME=$X
+    #
+    # capitalize the first character of ${X}. ${X:0:1} is frst letter of ${X}
+    # ferrite -> Ferrite; hexaferrum -> Hexaferrum
+    export DIR=$(echo ${X:0:1} | tr '[:lower:]' '[:upper:]')${X#${X:0:1}*}
+
+    if  [[ ! -d ${THISDIR}/$DIR/transition ]] ; then
+      echo "error in $0: transition directory not found"
+      echo "error in $0: ${THISDIR}/$DIR/transition"
+      exit 1
+    fi
+    cd ${THISDIR}/$DIR/transition
+    paw_resolve -i ${SRCDIR}/cell_2.cntl -o ${ROOTNAME}.cntl \
+                -r P=$(echo "$PRESSURE / $GPa" | bc -l)
+    runpaw "cell_$Y $X"
+    extractenthalpy    # define VOLUME_$ROOTNAME and ENTHALPY_$ROOTNAME 
+    cd ${THISDIR}
+  done
+done
+
+#-------------------------------------------------------------------------
+fi
+#-------------------------------------------------------------------------
+
+
+#
+##############################################################################
+## Scanlat
+##############################################################################
+#-------------------------------------------------------------------------
+if true; then
+#-------------------------------------------------------------------------
+
+for X in ferrite hexaferrum ; do
+  cd ${THISDIR}
+  export ROOTNAME=$X
+  #
+  # capitalize the gfirst character of ${X}. ${X:0:1} is the first letter of ${X}
+  # ferrite -> Ferrite; hexaferrum -> Hexaferrum
+  export DIR=$(echo ${X:0:1} | tr '[:lower:]' '[:upper:]')${X#${X:0:1}*}
+  #
+  if [[ ! -d ${THISDIR}/$DIR ]] ; then mkdir ${THISDIR}/$DIR ; fi
+  cd ${THISDIR}/${DIR}
+  echo "scanlat loop: doing $ROOTNAME at $(date)" >>${LOG}
+  if [[ ! -d ${THISDIR}/$DIR/Scanlat ]] ; then 
+     mkdir ${THISDIR}/$DIR/Scanlat 
+  fi
+  cd ${THISDIR}/$DIR/Scanlat 
+
+  export LIST="90 92 94 96 98 99 100 101 102 104 106 108 110 112"
+  # insert k-grid R=40. and setup fe.stp
+  export KDIV=$(paw_get -n -w kdiv ${THISDIR}/$DIR/cell/${ROOTNAME})
+  paw_resolve -r KDIVID='DIV'  -r KDIVVAL="${KDIV}"  \
+              -f fe.stp=${STPDIR}/fe.stp \
+              -i ${SRCDIR}/${ROOTNAME}.strc \
+              -o ${ROOTNAME}.strc
+  cp ${SRCDIR}/start.cntl ${ROOTNAME}.cntl
+  echo " calculating scanlat(1) for ${ROOTNAME} at $(date)" >> ${LOG}
+  paw_scanlat -p ${ROOTNAME} -l "$LIST" -j ${NCORE}
+  cp ${SRCDIR}/cont1.cntl ${ROOTNAME}.cntl
+  echo " calculating scanlat(2) for ${ROOTNAME} at $(date)" >> ${LOG}
+  paw_scanlat -p ${ROOTNAME} -l "$LIST" -j ${NCORE}
+  cp ${SRCDIR}/cont2.cntl ${ROOTNAME}.cntl
+  echo " calculating scanlat(3) for ${ROOTNAME} at $(date)" >> ${LOG}
+  paw_scanlat -p ${ROOTNAME} -l "$LIST" -j ${NCORE}
+  echo " updating scanlat for ${ROOTNAME} at $(date)" >> ${LOG}
+  paw_scanlat -p ${ROOTNAME} -l "$LIST" -u
+  echo " .... scanlat done for ${ROOTNAME} at $(date)" >> ${LOG}
+  cd ${THISDIR}/$DIR
+done
+#-------------------------------------------------------------------------
+fi
+#-------------------------------------------------------------------------
+
+echo "=========================== doit_iron completed at $(date)" >>${LOG}
+exit
+##
+

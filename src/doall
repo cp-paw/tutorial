@@ -1,0 +1,11 @@
+#!/bin/bash
+export THISDIR=$(pwd)
+if [[ ! $0  -ef ${THISDIR}/src/doall ]] ; then
+  echo 'error in $0: must be called from parent directory'
+  exit 1
+fi
+
+src/doit_malo
+src/doit_iron
+src/doit_pmo
+src/doit_analyze

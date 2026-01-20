@@ -1,0 +1,24 @@
+!CONTROL
+  !GENERIC START=F NSTEP=1 !END 
+  !DFT 
+    !NTBO MODUS='HYBRID' OFFSITE=F  
+          K2=-0.25 SCALERCUT=2. !END
+  !END 
+  !PSIDYN 
+    !AUTO FRIC(-)=0.01 FACT(-)=0.97 
+          FRIC(+)=0.10 FACT(+)=1.0 
+          MINFRIC=0.01 !END
+  !END
+  !RDYN 
+    !AUTO FRIC(-)=0.00 FACT(-)=0.97 
+          FRIC(+)=0.10 FACT(+)=1.0 !END
+  !END
+  !analyse
+    !wave file='homo-1.wv'   b=75 k=1 S=1  !end
+    !wave file='homo.wv'     b=76 k=1 S=1  !end
+    !wave file='lumo.wv'     b=77 k=1 S=1  !end
+    !wave file='lumo+1.wv'   b=78 k=1 S=1  !end
+  !end
+!END 
+!EOB
+

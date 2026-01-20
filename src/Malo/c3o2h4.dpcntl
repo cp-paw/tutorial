@@ -1,0 +1,21 @@
+!DPCNTL
+  EZERO[EV]=0.  EMIN[EV]=-35. EMAX[EV]=3. YMIN=-0. YMAX=4. 
+  !GRAPH PREFIX='Dos/'
+    !SET ID='total' COLOR='BLACK' LEGEND=T !END
+    !SET ID='h'     COLOR='BLUE'  LEGEND=T !END
+    !SET ID='c'     COLOR='green' stack=T LEGEND=T !END
+    !SET ID='o'     COLOR='RED'   stack=T LEGEND=T !END
+  !END
+  !GRAPH_X PREFIX='Dos/' YMIN=0. YMAX=0.2 SCALE=1.
+    !SET ID='hs' COLOR='BLUE' LEGEND=T !END
+  !end
+  !graph prefix='Dos/' YMIN=0. YMAX=2. SCALE=1.0
+    !SET ID='os'   COLOR='yellow' LEGEND=T        !END
+    !SET ID='op'   COLOR='red'    LEGEND=T stack=T !END
+  !end
+  !graph prefix='Dos/' ymin=0. ymax=2. scale=1.0
+    !SET ID='cs'   COLOR='cyan' LEGEND=T        !END
+    !SET ID='cp'   COLOR='green' LEGEND=T   stack=T !END
+  !end
+!end
+!eob

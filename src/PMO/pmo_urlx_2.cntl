@@ -1,0 +1,15 @@
+!CONTROL
+  !GENERIC START=F NSTEP=300 !END 
+  !DFT 
+     !NTBO MODUS='HYBRID' OFFSITE=F  
+           K2=-0.25 SCALERCUT=2. !END
+  !END 
+  !FOURIER EPWPSI=30. !END
+  !PSIDYN STOP=T
+    !AUTO FRIC(-)=0.3 FACT(-)=0.97 
+          FRIC(+)=0.3 FACT(+)=1.0 
+          MINFRIC=0.02 !END
+  !END
+!END 
+!EOB
+

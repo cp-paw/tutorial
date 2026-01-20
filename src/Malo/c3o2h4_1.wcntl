@@ -1,0 +1,15 @@
+!WCNTL
+  !FILES
+    !FILE ID='WAVE' EXT=F NAME='lumo.wv' !END
+    !FILE ID='CUBE' EXT=F NAME='lumo.cub' !END
+    !FILE ID='GNUCONTOUR'     EXT=F NAME='lumo_c.gnu' !END
+    !FILE ID='GNURUBBERSHEET' EXT=F NAME='lumo_r.gnu' !END
+  !END
+  !VIEWBOX C=0. 0. 0.  T=10. 0. 0. 0. 10. 0. 0. 0. 10.  !END
+  !PLANE
+     C=  0.11586  0.86716  0.37296
+     T= 17.36788 -0.44868 -1.42624
+         0.34396 -8.5196  -3.49944
+  !END
+!END
+!EOB

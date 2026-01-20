@@ -1,0 +1,15 @@
+!CONTROL
+  !GENERIC NSTEP=1 START=F !END
+  !PSIDYN !END
+  !ANALYSE
+    !WAVE      B=14 FILE='homo.wv' !END
+    !WAVE      B=15 FILE='lumo.wv' !END
+    !DENSITY TYPE='TOTAL' FILE='rho.wv' !END
+    !POTENTIAL FILE='potential.wv' !END
+  !END
+  !FILES 
+    !file ID='RESTART_OUT' EXT=F NAME='/dev/null' !END
+  !END
+!END
+!EOB
+

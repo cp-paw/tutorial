@@ -1,0 +1,10 @@
+  !SPECIES NAME='MN' NPRO=1 1 1 RAD/RCOV=1.2
+    !NTBO    NOFL=1 0 1 LHFWEIGHT=0.06  !END 
+    !AUGMENT  ID='Manganese' EL='MN' CORE=""
+             TYPE='NDLSS' RBOX/RCOV=  1.200 RCSM/RCOV=  0.250
+             RCL/RCOV=  1.0 1.0 1.0 1.0
+      !GRID DMIN=   0.100E-6 DMAX=     0.100 RMAX= 9.000 !END
+      !POT  POW=  3.000 RC/RCOV=  0.9 val0=0. !END
+      !CORE POW=  3.000 RC/RCOV=  0.9 !END
+    !END
+  !END

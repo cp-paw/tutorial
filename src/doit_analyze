@@ -1,0 +1,296 @@
+#!/bin/bash
+export THISDIR=$(pwd)
+
+if [[ ! $0  -ef ${THISDIR}/src/doit_analyze ]] ; then
+  echo "error in $0: must be called from parent directory"
+  exit 1
+fi
+export LOG=${THISDIR}/log_malo
+
+export REPORT=report.txt
+if [[ -f ${REPORT} ]] ; then rm ${REPORT} ; fi
+
+echo "========= new call of doit_malo at $(date)==========" >> ${LOG}
+
+
+##############################################################################
+## Malonaldehyde 
+##############################################################################
+export ROOTNAME=c3o2h4
+export SRCDIR=${THISDIR}/src/Malo/
+export DIR=Malo
+if [[ ! -d $DIR ]] ; then echo "error in $0: $DIR does not exist"; exit 1 ; fi
+cd $DIR
+#=========================================================================
+# OO.DAT = o5-o6.dat 
+
+#------------ fig5  and fig6 --------------------------------------------
+export TMPDIR=$(mktemp -d)
+if [[ ! -d ${TMPDIR} ]] ; then  
+  echo "error in $0: failed to create tempdir"
+  exit 1 
+fi
+cd ${TMPDIR}
+cp ${THISDIR}/Malo/C_Malonaldehyde_aimd_1/* ./
+cp ${SRCDIR}/c3o2h4.tcntl ./
+paw_tra c3o2h4.tcntl
+
+#------------ fig5 --------------------------------------------------
+export FIGDIR=Fig5
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+
+xmgrace -free -noask \
+        o5-h8.dat o6-h8.dat o5-o6.dat dbn.dat \
+        -world 0.5 -0.7 10.5 5.5 \
+        -hdevice PNG \
+        -printfile ${FIGDIR}/${FIG}.png \
+        -hardcopy \
+        -saveall ${FIGDIR}/${FIG}.agr 
+
+cp o5-h8.dat ${FIGDIR}/
+cp o6-h8.dat ${FIGDIR}/
+cp o5-o6.dat ${FIGDIR}/
+cp dbn.dat   ${FIGDIR}/
+
+#------------ fig6 --------------------------------------------------
+export FIGDIR=Fig6
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+xmgrace -free -noask \
+        c3o2h4_t_all_noretard.dat  \
+        c3o2h4_t_o.dat c3o2h4_t_h.dat c3o2h4_t_c.dat \
+        c3o2h4_t_all.dat \
+        -world 0. 0 12 500 \
+        -hdevice PNG \
+        -printfile ${FIGDIR}/${FIG}.png \
+        -hardcopy \
+        -saveall ${FIGDIR}/${FIG}.agr 
+
+cp c3o2h4_t_all_noretard.dat ${FIGDIR}
+cp c3o2h4_t_all.dat          ${FIGDIR}
+cp c3o2h4_t_o.dat            ${FIGDIR}
+cp c3o2h4_t_c.dat            ${FIGDIR}
+cp c3o2h4_t_h.dat            ${FIGDIR}
+
+rm -rf ${TMPDIR}
+cd ${THISDIR}
+
+##############################################################################
+## Iron
+##############################################################################
+cd ${THISDIR}
+export SRCDIR=${THISDIR}/src/Iron
+
+# ==========density of states of ferrite and hexaferrum in Fig7==============
+
+export FIGDIR=Fig7
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+
+for X in Ferrite Hexaferrum ; do
+  ROOTNAME=$(echo "$X" | tr '[:upper:]' '[:lower:]')
+
+  export TMPDIR=$(mktemp -d)
+  if [[ ! -d ${TMPDIR} ]] ; then  
+    echo "error in $0: failed to create tempdir"
+    exit 1 
+  fi
+
+  cd ${TMPDIR}
+  DIR=${THISDIR}/$X/cell
+  if [[ ! -d $DIR ]] ; then echo "error in $0: $DIR does not exist"; exit 1 ; fi
+  cp ${DIR}/* ./
+  cp ${SRCDIR}/${ROOTNAME}.dcntl  ${ROOTNAME}.dcntl
+  cp ${SRCDIR}/${ROOTNAME}.dpcntl ${ROOTNAME}.dpcntl
+  mkdir ${TMPDIR}/Dos
+  paw_dos ${ROOTNAME}.dcntl 1>dos.out 2>&1 
+  paw_dosplot ${ROOTNAME}.dpcntl 1>dosplot.out 2>&1
+  xmgrace -free -nosafe \
+          -batch ${ROOTNAME}.bat \
+          -hdevice PNG -hardcopy \
+          -printfile ${FIGDIR}/${ROOTNAME}_dos.png \
+          -saveall ${ROOTNAME}_dos.agr 
+
+  if [[ ! -d ${FIGDIR}/$X ]] ; then mkdir ${FIGDIR}/$X; fi
+  cp ${ROOTNAME}.bat     ${FIGDIR}/$X
+  cp -r Dos              ${FIGDIR}/$X
+  cp ${ROOTNAME}_dos.agr ${FIGDIR}/$X
+  cd ${THISDIR}
+  rm -rf ${TMPDIR}
+done
+
+#======== info
+export V_f=$(paw_get -n -w volume -u AA^3 ${THISDIR}/Ferrite/cell/ferrite)
+export V_h=$(paw_get -n -w volume -u AA^3 ${THISDIR}/Hexaferrum/cell/hexaferrum)
+export V_h=$(echo $V_h / 2 | bc -l)
+echo $V_f $V_h 
+echo ferrite lattice constant A_f=$(echo "p(2 * $V_f,1/3) " | bc -l) >>${REPORT}
+echo "percent volume ratio hexaferrum/ferrite $(echo " 100 *($V_h / $V_f-1) " | bc -l)" % >>${REPORT}
+
+export LIST="90 92 94 96 98 99 100 101 102 104 106 108 110 112"
+cd ${THISDIR}/Ferrite/Scanlat; paw_scanlat -p ferrite -l "$LIST" -u
+cd ${THISDIR}/Hexaferrum/Scanlat; paw_scanlat -p hexaferrum -l "$LIST" -u \
+   ; awk '!/#/ {print $1/2 , $2/2 }' latscan.dat > latscan_half.dat
+
+cd ${THISDIR}
+paw_murnaghan < ${THISDIR}/Ferrite/Scanlat/latscan.dat \
+              > ferrite_murn.out
+cp murn.dat ferrite_murn.dat
+paw_murnaghan -scale 0.5 \
+              < ${THISDIR}/Hexaferrum/Scanlat/latscan.dat \
+              > hexaferrum_murn.out
+cp murn.dat hexaferrum_murn.dat
+
+echo "====== Murnaghan report for Ferrite =====" >>${REPORT}
+grep EQUIL ferrite_murn.out >>${REPORT}
+grep DERIVATIVE ferrite_murn.out >>${REPORT}
+echo "====== Murnaghan report for Hexaferrum =====" >>${REPORT}
+grep EQUIL hexaferrum_murn.out >>${REPORT}
+grep DERIVATIVE hexaferrum_murn.out >>${REPORT}
+
+# collect enthalpy
+ENTHALPY_F=$(paw_get -w etot -u h -n ${THISDIR}/Ferrite/transition/ferrite)
+ENTHALPY_H=$(paw_get -w etot -u h -n ${THISDIR}/Hexaferrum/transition/hexaferrum)
+ENTHALPY_H=$(echo "$ENTHALPY_H / 2 " | bc -l)
+echo transition enthalpy[H]= $ENTHALPY_F $ENTHALPY_H >>${REPORT}
+#
+#collect transition pressure
+LINE=$(grep 'P\[GPA\]=' ${THISDIR}/Ferrite/transition/ferrite.cntl)
+LINE=${LINE#*P\[GPA\]=}
+TPRESSURE_F=${LINE% *}
+LINE=$(grep 'P\[GPA\]=' ${THISDIR}/Hexaferrum/transition/hexaferrum.cntl)
+LINE=${LINE#*P\[GPA\]=}
+TPRESSURE_H=${LINE% *}
+echo transition pressure P[GPA]=$TPRESSURE_F=$TPRESSURE_H >>${REPORT}
+
+# 1H/a0^3=2.942 101 5697 ˣ 10^13 Pa =29421.015697 GPa
+TPRESSURE_F=$(echo " $TPRESSURE_F / 29421.015697 " | bc -l)
+TPRESSURE_H=$(echo " $TPRESSURE_H / 29421.015697 " | bc -l)
+echo transition pressure P[H/a0^3]=$TPRESSURE_F=$TPRESSURE_H >>${REPORT}
+
+echo now awk:
+awk -v "x=${TPRESSURE_F}" -v "h=${ENTHALPY_F}" \
+      '{print $1, h - $1 * x }' ferrite_murn.dat \
+     > tangent.dat
+awk -v "x=${TPRESSURE_F}" -v "h=${ENTHALPY_F}" \
+      '{print $1, h }' ferrite_murn.dat \
+     > enthalpy_tangent.dat
+awk -v "x=${TPRESSURE_F}" '{print $1, $2 + $1 * x }' ferrite_murn.dat \
+     > enthalpy_ferrite_murn.dat
+awk -v "x=${TPRESSURE_F}" '{print $1, $2 + $1 * x }' hexaferrum_murn.dat \
+     > enthalpy_hexaferrum_murn.dat
+awk -v "x=${TPRESSURE_F}" '{print $1, $2 + $1 * x }' \
+     ${THISDIR}/Ferrite/Scanlat/latscan.dat \
+     > enthalpy_ferrite_latscan.dat
+awk -v "x=${TPRESSURE_F}" '{print $1, $2 + $1 * x }'  \
+    ${THISDIR}/Hexaferrum/Scanlat/latscan_half.dat  \
+     > enthalpy_hexaferrum_latscan.dat 
+
+
+#------------ fig8a --------------------------------------------------
+export FIGDIR=Fig8a
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+
+xmgrace -free -noask \
+         tangent.dat \
+         ${THISDIR}/ferrite_murn.dat \
+         ${THISDIR}/hexaferrum_murn.dat \
+         ${THISDIR}/Ferrite/Scanlat/latscan.dat \
+         ${THISDIR}/Hexaferrum/Scanlat/latscan_half.dat \
+        -world 60. -22.015 90 -21.99 \
+        -hdevice PNG \
+        -printfile ${FIGDIR}/${FIG}.png \
+        -hardcopy \
+        -saveall ${FIGDIR}/${FIG}.agr 
+cp ${THISDIR}/ferrite_murn.dat                    ${FIGDIR}/
+cp ${THISDIR}/hexaferrum_murn.dat                 ${FIGDIR}/
+cp ${THISDIR}/Ferrite/Scanlat/latscan.dat         ${FIGDIR}/
+cp ${THISDIR}/Hexaferrum/Scanlat/latscan_half.dat ${FIGDIR}/
+
+#------------ fig8b --------------------------------------------------
+export FIGDIR=Fig8b
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+
+xmgrace  -free -noask \
+         enthalpy_tangent.dat \
+         enthalpy_ferrite_murn.dat \
+         enthalpy_hexaferrum_murn.dat \
+         enthalpy_ferrite_latscan.dat \
+         enthalpy_hexaferrum_latscan.dat \
+        -world 60. -21.975 90 -21.950 \
+        -hdevice PNG \
+        -printfile ${FIGDIR}/${FIG}.png \
+        -hardcopy \
+        -saveall ${FIGDIR}/${FIG}.agr 
+
+  cp enthalpy_tangent.dat            ${FIGDIR}/
+  cp enthalpy_ferrite_murn.dat       ${FIGDIR}/
+  cp enthalpy_hexaferrum_murn.dat    ${FIGDIR}/
+  cp enthalpy_ferrite_latscan.dat    ${FIGDIR}/
+  cp enthalpy_hexaferrum_latscan.dat ${FIGDIR}/
+
+
+##############################################################################
+## PMO
+##############################################################################
+cd ${THISDIR}
+export SRCDIR=${THISDIR}/src/PMO
+ROOTNAME=pmo
+
+#------------ fig9 --------------------------------------------------
+export FIGDIR=Fig9
+export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
+export FIGDIR=${THISDIR}/${FIGDIR}
+if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
+echo "before ${FIG}"
+
+
+export TMPDIR=$(mktemp -d)
+if [[ ! -d ${TMPDIR} ]] ; then  
+  echo "error in $0: failed to create tempdir"
+  exit 1 
+fi
+cd ${TMPDIR}
+
+cp -r ${THISDIR}/PMO/C_PMO_rlx/* ./
+cp ${SRCDIR}/${ROOTNAME}.dcntl ./
+cp ${SRCDIR}/${ROOTNAME}.dpcntl ./
+
+DIR=${THISDIR}/PMO
+if [[ ! -d $DIR ]] ; then echo "error in $0: $DIR does not exist"; exit 1 ; fi
+
+if [[ ! -d Dos ]] ; then mkdir Dos; fi
+paw_dos.x ${ROOTNAME}.dcntl
+paw_dosplot.x ${ROOTNAME}.dpcntl
+xmgrace -free -nosafe \
+        -batch ${ROOTNAME}.bat \
+        -hdevice PNG -hardcopy \
+        -printfile ${FIGDIR}/${FIG}.png \
+        -saveall ${FIG}.agr 
+
+cp -r Dos ${FIGDIR}/
+cp  ${ROOTNAME}.bat ${FIGDIR}/
+cp  ${FIG}.agr ${FIGDIR}/
+cd ${THISDIR}
+echo ${TMPDIR}
+exit 1
+rm -rf ${TMPDIR}
+
+
+# export FIG=fig10
+# echo "before ${FIG}"
+# cp ${THISDIR}/src/PMO/pmo.wcntl ${DIR}/pmo.wcntl
+# cd ${DIR}; paw_wave pmo.wcntl  

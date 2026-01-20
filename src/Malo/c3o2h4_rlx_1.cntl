@@ -1,0 +1,14 @@
+!CONTROL
+  !GENERIC NSTEP=2000 START=F !END
+  !PSIDYN
+    !AUTO FRIC(-)=0.01 FACT(-)=0.9
+          FRIC(+)=0.20 FACT(+)=1.0
+          MINFRIC=0.01 !END
+  !END
+  !RDYN
+    !AUTO FRIC(-)=0.0 FACT(-)=1.0
+          FRIC(+)=0.1 FACT(+)=1.0 !END
+  !END
+!END
+!EOB
+

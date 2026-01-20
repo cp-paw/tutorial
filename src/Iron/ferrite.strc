@@ -1,0 +1,12 @@
+!STRUCTURE 
+  !GENERIC LUNIT[AA]=2.8665  !END  
+  !OCCUPATIONS EMPTY=8 NSPIN=2 spin[hbar]=1. !END
+  !KPOINTS @KDIVID@= @KDIVVAL@ !END
+  !LATTICE T=-0.5  0.5  0.5  
+              0.5 -0.5  0.5   
+              0.5  0.5 -0.5 !END
+  !ATOM NAME='FE1' R= 0.0  0.0  0.0 !END
+  @fe.stp@
+!END 
+!EOB 
+

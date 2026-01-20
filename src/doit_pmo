@@ -1,0 +1,115 @@
+#!/bin/bash
+export THISDIR=$(pwd)
+if [[ ! $0  -ef ${THISDIR}/src/doit_pmo ]] ; then
+  echo 'error in $0: must be called from parent directory'
+  exit 1
+fi
+export LOG=${THISDIR}/log_pmo
+export STPIR=${THISDIR}/src/Setups
+echo "========= new call of doit_pmo at $(date)==========" >> ${LOG}
+
+## encapsulate the paw command
+function runpaw () {
+  echo "doing runpaw $1......................................................."
+  echo "runpaw: doing $ROOTNAME at $(date)" >>${LOG}
+  doppaw -n 10 ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?
+  if [[ $RC -eq 0 ]] ; then 
+    echo "runpaw: $ROOTNAME done at $(date)" >>${LOG}
+    echo "...........................................runpaw ${ROOTNAME} $1 done"
+    return
+  else
+    echo "error in runpaw: $1" 
+    exit 1
+  fi
+}
+
+##############################################################################
+## 
+##############################################################################
+export ROOTNAME=pmo
+export SRCDIR=${THISDIR}/src/PMO/
+export DIR=PMO
+if [[ ! -d $DIR ]] ; then mkdir $DIR ; fi
+cd $DIR
+
+export URLX1='T'
+export URLX2='T'
+export RLX1='T'
+export DOS='T'
+export STR='T'
+export WAVE='T'
+
+if [[ ${URLX1} = "T" ]] ; then 
+  ##   relax wave functions with orbpot
+  rm ${ROOTNAME}.cntl
+  cp ${SRCDIR}/${ROOTNAME}_urlx_1.cntl ${ROOTNAME}.cntl
+  paw_resolve -i ${SRCDIR}/${ROOTNAME}_1.strc \
+              -o tmp.strc \
+              -f praseodymium=${STPDIR}/pr.stp \
+              -f manganese=${STPDIR}/mn.stp \
+              -f oxygen=${STPDIR}/o_.stp 
+  sed 's/!ORBPOT_X/!ORBPOT/g' tmp.strc > ${ROOTNAME}.strc
+  runpaw 'urlx 1'
+  paw_checkpoint -c C_PMO_urlx_1 
+fi
+
+
+if [[ ${URLX2} = 'T' ]] ; then 
+  ##   relax wave functions without orbpot
+  rm ${ROOTNAME}.cntl
+  cp ${SRCDIR}/${ROOTNAME}_urlx_2.cntl ${ROOTNAME}.cntl
+  paw_resolve -i ${SRCDIR}/${ROOTNAME}_1.strc \
+              -o ${ROOTNAME}.strc \
+              -f praseodymium=${STPDIR}/pr.stp \
+              -f manganese=${STPDIR}/mn.stp \
+              -f oxygen=${STPDIR}/o_.stp  |\
+  runpaw 'urlx 2'
+  paw_checkpoint -c C_PMO_urlx_2
+fi
+
+if [[ ${RLX1} = 'T' ]] ; then 
+  ##  relax structure
+  rm ${ROOTNAME}.cntl
+  cp ${SRCDIR}/${ROOTNAME}_rlx_1.cntl ${ROOTNAME}.cntl
+  rm  ${ROOTNAME}.prot 
+  runpaw 'rlx_1'
+  paw_checkpoint -c C_PMO_rlx
+fi
+
+
+## collect data
+
+if [[ ${DOS} = 'T' ]] ; then 
+  ## plot density of states
+  echo " calculating dos for ${ROOTNAME} " >> ${LOG}
+  cp ${SRCDIR}/${ROOTNAME}.dcntl  ${ROOTNAME}.dcntl
+  cp ${SRCDIR}/${ROOTNAME}.dpcntl ${ROOTNAME}.dpcntl
+  mkdir ./Dos
+  paw_dos ${ROOTNAME}.dcntl 1>out 2>&1 
+  paw_dosplot ${ROOTNAME}.dpcntl 1>out 2>&1
+  gracebat -nosafe -hdevice PNG -batch pmo.bat -hardcopy -printfile pmo_dos.png
+fi
+
+## construct sprot file and structure files for viewing
+if [[ ${STR} = 'T' ]] ; then 
+  echo " calculating structure for ${ROOTNAME} " >> ${LOG}
+  paw_strc -c ${ROOTNAME} 
+fi
+
+
+## construct wave functions
+if [[ ${WAVE} = 'T' ]] ; then 
+  rm ${ROOTNAME}.cntl
+  echo " calculating wave functions for ${ROOTNAME} " >> ${LOG}
+  cp ${SRCDIR}/${ROOTNAME}_analyze_1.cntl ${ROOTNAME}.cntl
+  runpaw 'analyze_1'
+  cp ${SRCDIR}/${ROOTNAME}_1.wcntl ${ROOTNAME}.wcntl
+  paw_wave ${ROOTNAME}.wcntl 1>out 2>&1
+  paw_checkpoint -c C_PMO_collect
+fi
+
+echo '=========================== doit_pmo completed at $(date)' >>${LOG}
+echo '............................................... doit_pmo completed'
+exit
+##
+
