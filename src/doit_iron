@@ -8,7 +8,7 @@ fi
 export NCORE=14   # number of cores available
 export LOG=${THISDIR}/log
 export SRCDIR=${THISDIR}/src/Iron
-export STPIR=${THISDIR}/src/Setups
+export STPDIR=${THISDIR}/src/Setups
 #
 # conversion of pressure units #########################################
 Pa=$(echo "1 / (2.9421015697 * 10^13)" | bc -l)
@@ -207,7 +207,7 @@ for X in ferrite hexaferrum ; do
   cd ${THISDIR}
   export ROOTNAME=$X
   #
-  # capitalize the gfirst character of ${X}. ${X:0:1} is the first letter of ${X}
+  # capitalize the first character of ${X}. ${X:0:1} is the first letter of ${X}
   # ferrite -> Ferrite; hexaferrum -> Hexaferrum
   export DIR=$(echo ${X:0:1} | tr '[:lower:]' '[:upper:]')${X#${X:0:1}*}
   #

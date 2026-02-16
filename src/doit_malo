@@ -4,8 +4,9 @@ if [[ ! $0  -ef ${THISDIR}/src/doit_malo ]] ; then
   echo 'error in $0: must be called from parent directory'
   exit 1
 fi
+export NCORE=14   # number of cores available
 export LOG=${THISDIR}/log_malo
-export STPIR=${THISDIR}/src/Setups
+export STPDIR=${THISDIR}/src/Setups
 export SRCDIR=${THISDIR}/src/Malo/
 %
 echo "========= new call of doit_malo at $(date)==========" >> ${LOG}
@@ -14,7 +15,7 @@ echo "========= new call of doit_malo at $(date)==========" >> ${LOG}
 function runpaw () {
   echo "doing runpaw $1......................................................."
   echo "runpaw: doing $ROOTNAME at $(date)" >>${LOG}
-  doppaw -n 10 ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?
+  doppaw -n ${NCORE} ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?
   if [[ $RC -eq 0 ]] ; then 
     echo "runpaw: $ROOTNAME done at $(date)" >>${LOG}
     echo "...........................................runpaw ${ROOTNAME} $1 done"
@@ -90,8 +91,8 @@ paw_tra ${ROOTNAME}.tcntl
 # gracebat -nosafe -hardcopy -batch bfile
 # xmgrace -free -noask O1H.dat O2H.dat
 
-echo '=========================== doit_iron completed at $(date)' >>${LOG}
-echo '............................................... doit_iron completed'
+echo '=========================== doit_malo completed at $(date)' >>${LOG}
+echo '............................................... doit_malo completed'
 exit
 ##
 

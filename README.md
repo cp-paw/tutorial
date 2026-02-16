@@ -1,7 +1,10 @@
 # CP-PAW Tutorial
 
 This repository contains scripts and input files for the exercises in the paper
-*The CP-PAW code package for first-principles calculations from a user’s perspective* by Peter E. Blöchl, Robert Schade, Lukas Allen-Rump, Sangeeta Rajpurohit, Amrith Rathnakaran, Konstantin Tamoev, Mani Lokamani, and Thomas D. Kühne.
+
+*The CP-PAW code package for first-principles calculations from a user’s perspective* 
+
+by Peter E. Blöchl, Robert Schade, Lukas Allen-Rump, Sangeeta Rajpurohit, Amrith Rathnakaran, Konstantin Tamoev, Mani Lokamani, and Thomas D. Kühne.
 
 ## Overview
 

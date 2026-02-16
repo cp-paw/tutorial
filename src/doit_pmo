@@ -4,15 +4,16 @@ if [[ ! $0  -ef ${THISDIR}/src/doit_pmo ]] ; then
   echo 'error in $0: must be called from parent directory'
   exit 1
 fi
+export NCORE=14   # number of cores available
 export LOG=${THISDIR}/log_pmo
-export STPIR=${THISDIR}/src/Setups
+export STPDIR=${THISDIR}/src/Setups
 echo "========= new call of doit_pmo at $(date)==========" >> ${LOG}
 
 ## encapsulate the paw command
 function runpaw () {
   echo "doing runpaw $1......................................................."
   echo "runpaw: doing $ROOTNAME at $(date)" >>${LOG}
-  doppaw -n 10 ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?
+  doppaw -n ${NCORE} ${ROOTNAME}.cntl 1>out 2>&1 ; RC=$?
   if [[ $RC -eq 0 ]] ; then 
     echo "runpaw: $ROOTNAME done at $(date)" >>${LOG}
     echo "...........................................runpaw ${ROOTNAME} $1 done"
@@ -24,7 +25,7 @@ function runpaw () {
 }
 
 ##############################################################################
-## 
+## PMO
 ##############################################################################
 export ROOTNAME=pmo
 export SRCDIR=${THISDIR}/src/PMO/
