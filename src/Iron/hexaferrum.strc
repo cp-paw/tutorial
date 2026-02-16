@@ -10,25 +10,3 @@
   @fe.stp@
 !END 
 !EOB 
-
-
-    !AUGMENT ID='FE_NDLSS_V0' EL='FE' CORE='-s-p'
-            TYPE='NDLSS' RBOX/RCOV=1.2 RCSM/RCOV=0.25
-            RCL/RCOV=  0.6 0.6 0.6 0.6
-      !GRID DMIN= 1.E-7 DMAX=0.1 RMAX= 9. !END
-      !POT  POW=  3.000 RC/RCOV=  0.702 val0=0. !END
-      !CORE POW=  3.000 RC/RCOV=  0.702 !END
-    !END
-
-  !SPECIES NAME='FE' NPRO=2 2 1  LRHOX=4 RAD/RCOV=1.2
-    id='fe_.75_6.0'
-  !END
-
-
-TAG: metal
-
-the ideal c/a ratio of hcp is c/a=2*sqrt(2/3)=1.6329931619
-
-T1= 1,0,0
-T2= 1/2, sqrt(3)/2,0
-T3= 0,0,sqrt(8/3)
