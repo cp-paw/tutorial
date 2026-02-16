@@ -13,12 +13,12 @@
     !AUTO FRIC(-)=0.00 FACT(-)=0.97 
           FRIC(+)=0.10 FACT(+)=1.0 !END
   !END
-  !analyse
-    !wave file='homo-1.wv'   b=75 k=1 S=1  !end
-    !wave file='homo.wv'     b=76 k=1 S=1  !end
-    !wave file='lumo.wv'     b=77 k=1 S=1  !end
-    !wave file='lumo+1.wv'   b=78 k=1 S=1  !end
-  !end
+  !ANALYSE
+    !WAVE FILE='homo-1.wv'   B=75 K=1 S=1  !END
+    !WAVE FILE='homo.wv'     B=76 K=1 S=1  !END
+    !WAVE FILE='lumo.wv'     B=77 K=1 S=1  !END
+    !WAVE FILE='lumo+1.wv'   B=78 K=1 S=1  !END
+  !END
 !END 
 !EOB
 

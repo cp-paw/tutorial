@@ -1,16 +1,16 @@
-!wcntl
-  !files
-    !file id='WAVE'           ext=F NAME='homo.wv' !end
-    !file id='CUBE'           ext=F NAME='homo.cub' !end
-    !file id='WRL'            ext=F NAME='homo.wrl' !end
-    !file id='GNUCONTOUR'     ext=F NAME='homo_c.gnu' !end
-    !file id='GNURUBBERSHEET' ext=F NAME='homo_r.gnu' !end
-  !end
-  !viewbox O= 0.49192  -0.49192   0.96845
-           T=10. 0. 0. 0. 10. 0. 0. 0. 10. !end
-  !plane   C=-0. -0. -0. 
-           T=10. 0. 0. 0. 10. 0.  !end
-!end
-!eob
+!WCNTL
+  !FILES
+    !FILE ID='WAVE'           EXT=F NAME='homo.wv'    !END
+    !FILE ID='CUBE'           EXT=F NAME='homo.cub'   !END
+    !FILE ID='WRL'            EXT=F NAME='homo.wrl'   !END
+    !FILE ID='GNUCONTOUR'     EXT=F NAME='homo_c.gnu' !END
+    !FILE ID='GNURUBBERSHEET' EXT=F NAME='homo_r.gnu' !END
+  !END
+  !VIEWBOX O= 0.49192  -0.49192   0.96845
+           T=10. 0. 0. 0. 10. 0. 0. 0. 10. !END
+  !PLANE   C=-0. -0. -0. 
+           T=10. 0. 0. 0. 10. 0.  !END
+!END
+!EOB
 
 

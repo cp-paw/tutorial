@@ -1,95 +1,95 @@
-!dcntl
-  !generic prefix='Dos/' !end
-  !grid broadening[K]=800. !end
-  !weight id='total' type='all' !end
-  !weight id='os' 
-    !atom name='O_(2)14' type='s' !end
-    !atom name='O_(2)17' type='s' !end
-    !atom name='O_(2)13' type='s' !end
-    !atom name='O_(2)18' type='s' !end
-    !atom name='O_(1)9'  type='s' !end
-    !atom name='O_(1)12' type='s' !end
-    !atom name='O_(2)16' type='s' !end
-    !atom name='O_(2)19' type='s' !end
-    !atom name='O_(2)15' type='s' !end
-    !atom name='O_(2)20' type='s' !end
-    !atom name='O_(1)10' type='s' !end
-    !atom name='O_(1)11' type='s' !end
-  !end
+!DCNTL
+  !GENERIC PREFIX='Dos/' !END
+  !GRID BROADENING[K]=800. !END
+  !WEIGHT ID='TOTAL' TYPE='ALL' !END
+  !WEIGHT ID='os' 
+    !ATOM NAME='O_(2)14' TYPE='S' !END
+    !ATOM NAME='O_(2)17' TYPE='S' !END
+    !ATOM NAME='O_(2)13' TYPE='S' !END
+    !ATOM NAME='O_(2)18' TYPE='S' !END
+    !ATOM NAME='O_(1)9'  TYPE='S' !END
+    !ATOM NAME='O_(1)12' TYPE='S' !END
+    !ATOM NAME='O_(2)16' TYPE='S' !END
+    !ATOM NAME='O_(2)19' TYPE='S' !END
+    !ATOM NAME='O_(2)15' TYPE='S' !END
+    !ATOM NAME='O_(2)20' TYPE='S' !END
+    !ATOM NAME='O_(1)10' TYPE='S' !END
+    !ATOM NAME='O_(1)11' TYPE='S' !END
+  !END
 
-  !weight id='op' 
-    !atom name='O_(2)14' type='p' !end
-    !atom name='O_(2)17' type='p' !end
-    !atom name='O_(2)13' type='p' !end
-    !atom name='O_(2)18' type='p' !end
-    !atom name='O_(1)9'  type='p' !end
-    !atom name='O_(1)12' type='p' !end
-    !atom name='O_(2)16' type='p' !end
-    !atom name='O_(2)19' type='p' !end
-    !atom name='O_(2)15' type='p' !end
-    !atom name='O_(2)20' type='p' !end
-    !atom name='O_(1)10' type='p' !end
-    !atom name='O_(1)11' type='p' !end
-  !end
-  !weight id='prs_up' 
-    !atom name='PR1' type='s' !end
-    !atom name='PR3' type='s' !end
-  !end
-  !weight id='prs_dn' 
-    !atom name='PR4' type='s' !end
-    !atom name='PR2' type='s' !end
-  !end
-  !weight id='prp_up' 
-    !atom name='PR1' type='p' !end
-    !atom name='PR3' type='p' !end
-  !end
-  !weight id='prp_dn' 
-    !atom name='PR4' type='p' !end
-    !atom name='PR2' type='p' !end
-  !end
-  !weight id='prd_up' 
-    !atom name='PR1' type='d' !end
-    !atom name='PR3' type='d' !end
-  !end
-  !weight id='prd_dn' 
-    !atom name='PR4' type='d' !end
-    !atom name='PR2' type='d' !end
-  !end
-  !weight id='prf_up' 
-    !atom name='PR1' type='f' !end
-    !atom name='PR3' type='f' !end
-  !end
-  !weight id='prf_dn' 
-    !atom name='PR4' type='f' !end
-    !atom name='PR2' type='f' !end
-  !end
-  !weight id='mneg_dn' 
-    !orb atom='MN5' nnz='O_(2)15:-100' NNX='O_(2)20'      type='d3z2-r2' !end
-    !orb atom='MN5' nnz='O_(2)15:-100' NNX='O_(2)20'      type='dx2-y2'  !end
-    !orb atom='MN6' nnz='O_(2)14:0-10' NNX='O_(2)13:00-1' type='d3z2-r2' !end
-    !orb atom='MN6' nnz='O_(2)14:0-10' NNX='O_(2)13:00-1' type='dx2-y2'  !end
-  !end
-  !weight id='mneg_up' 
-    !orb atom='MN7' nnz='O_(2)19'      NNX='O_(2)20'      type='d3z2-r2' !end
-    !orb atom='MN7' nnz='O_(2)19'      NNX='O_(2)20'      type='dx2-y2'  !end
-    !orb atom='MN8' nnz='O_(2)20'      NNX='O_(1)9'       type='d3z2-r2' !end
-    !orb atom='MN8' nnz='O_(2)20'      NNX='O_(1)9'       type='dx2-y2'  !end
-  !end
-  !weight id='mnt2g_dn' 
-    !orb atom='MN5' nnz='O_(2)15:-100' NNX='O_(2)20' type='dxy' !end
-    !orb atom='MN5' nnz='O_(2)15:-100' NNX='O_(2)20' type='dxz' !end
-    !orb atom='MN5' nnz='O_(2)15:-100' NNX='O_(2)20' type='dyz' !end
-    !orb atom='MN6' nnz='O_(2)14:0-10' NNX='O_(2)13:00-1' type='dxy' !end
-    !orb atom='MN6' nnz='O_(2)14:0-10' NNX='O_(2)13:00-1' type='dxz' !end
-    !orb atom='MN6' nnz='O_(2)14:0-10' NNX='O_(2)13:00-1' type='dxy' !end
-  !end
-  !weight id='mnt2g_up' 
-    !orb atom='MN7' nnz='O_(2)19' NNX='O_(2)20' type='dxy' !end
-    !orb atom='MN7' nnz='O_(2)19' NNX='O_(2)20' type='dxz' !end
-    !orb atom='MN7' nnz='O_(2)19' NNX='O_(2)20' type='dyz' !end
-    !orb atom='MN8' nnz='O_(2)20' NNX='O_(1)9'  type='dxy' !end
-    !orb atom='MN8' nnz='O_(2)20' NNX='O_(1)9'  type='dxz' !end
-    !orb atom='MN8' nnz='O_(2)20' NNX='O_(1)9'  type='dyz' !end
-  !end
-!end
-!eob
+  !WEIGHT id='op' 
+    !ATOM NAME='O_(2)14' TYPE='P' !END
+    !ATOM NAME='O_(2)17' TYPE='P' !END
+    !ATOM NAME='O_(2)13' TYPE='P' !END
+    !ATOM NAME='O_(2)18' TYPE='P' !END
+    !ATOM NAME='O_(1)9'  TYPE='P' !END
+    !ATOM NAME='O_(1)12' TYPE='P' !END
+    !ATOM NAME='O_(2)16' TYPE='P' !END
+    !ATOM NAME='O_(2)19' TYPE='P' !END
+    !ATOM NAME='O_(2)15' TYPE='P' !END
+    !ATOM NAME='O_(2)20' TYPE='P' !END
+    !ATOM NAME='O_(1)10' TYPE='P' !END
+    !ATOM NAME='O_(1)11' TYPE='P' !END
+  !END
+  !WEIGHT ID='prs_up' 
+    !ATOM NAME='PR1' TYPE='S' !END
+    !ATOM NAME='PR3' TYPE='S' !END
+  !END
+  !WEIGHT ID='prs_dn' 
+    !ATOM NAME='PR4' TYPE='S' !END
+    !ATOM NAME='PR2' TYPE='S' !END
+  !END
+  !WEIGHT ID='prp_up' 
+    !ATOM NAME='PR1' TYPE='P' !END
+    !ATOM NAME='PR3' TYPE='P' !END
+  !END
+  !WEIGHT ID='prp_dn' 
+    !ATOM NAME='PR4' TYPE='P' !END
+    !ATOM NAME='PR2' TYPE='P' !END
+  !END
+  !WEIGHT ID='prd_up' 
+    !ATOM NAME='PR1' TYPE='D' !END
+    !ATOM NAME='PR3' TYPE='D' !END
+  !END
+  !WEIGHT ID='prd_dn' 
+    !ATOM NAME='PR4' TYPE='D' !END
+    !ATOM NAME='PR2' TYPE='D' !END
+  !END
+  !WEIGHT ID='prf_up' 
+    !ATOM NAME='PR1' TYPE='F' !END
+    !ATOM NAME='PR3' TYPE='F' !END
+  !END
+  !WEIGHT ID='prf_dn' 
+    !ATOM NAME='PR4' TYPE='F' !END
+    !ATOM NAME='PR2' TYPE='F' !END
+  !END
+  !WEIGHT ID='mneg_dn' 
+    !ORB ATOM='MN5' NNZ='O_(2)15:-100' NNX='O_(2)20'      TYPE='D3Z2-R2' !END
+    !ORB ATOM='MN5' NNZ='O_(2)15:-100' NNX='O_(2)20'      TYPE='DX2-Y2'  !END
+    !ORB ATOM='MN6' NNZ='O_(2)14:0-10' NNX='O_(2)13:00-1' TYPE='D3Z2-R2' !END
+    !ORB ATOM='MN6' NNZ='O_(2)14:0-10' NNX='O_(2)13:00-1' TYPE='DX2-Y2'  !END
+  !END
+  !WEIGHT ID='mneg_up' 
+    !ORB ATOM='MN7' NNZ='O_(2)19'      NNX='O_(2)20'      TYPE='D3Z2-R2' !END
+    !ORB ATOM='MN7' NNZ='O_(2)19'      NNX='O_(2)20'      TYPE='DX2-Y2'  !END
+    !ORB ATOM='MN8' NNZ='O_(2)20'      NNX='O_(1)9'       TYPE='D3Z2-R2' !END
+    !ORB ATOM='MN8' NNZ='O_(2)20'      NNX='O_(1)9'       TYPE='DX2-Y2'  !END
+  !END
+  !WEIGHT ID='mnt2g_dn' 
+    !ORB ATOM='MN5' NNZ='O_(2)15:-100' NNX='O_(2)20' TYPE='DXY' !END
+    !ORB ATOM='MN5' NNZ='O_(2)15:-100' NNX='O_(2)20' TYPE='DXZ' !END
+    !ORB ATOM='MN5' NNZ='O_(2)15:-100' NNX='O_(2)20' TYPE='DYZ' !END
+    !ORB ATOM='MN6' NNZ='O_(2)14:0-10' NNX='O_(2)13:00-1' TYPE='DXY' !END
+    !ORB ATOM='MN6' NNZ='O_(2)14:0-10' NNX='O_(2)13:00-1' TYPE='DXZ' !END
+    !ORB ATOM='MN6' NNZ='O_(2)14:0-10' NNX='O_(2)13:00-1' TYPE='DXY' !END
+  !END
+  !WEIGHT ID='mnt2g_up' 
+    !ORB ATOM='MN7' NNZ='O_(2)19' NNX='O_(2)20' TYPE='DXY' !END
+    !ORB ATOM='MN7' NNZ='O_(2)19' NNX='O_(2)20' TYPE='DXZ' !END
+    !ORB ATOM='MN7' NNZ='O_(2)19' NNX='O_(2)20' TYPE='DYZ' !END
+    !ORB ATOM='MN8' NNZ='O_(2)20' NNX='O_(1)9'  TYPE='DXY' !END
+    !ORB ATOM='MN8' NNZ='O_(2)20' NNX='O_(1)9'  TYPE='DXZ' !END
+    !ORB ATOM='MN8' NNZ='O_(2)20' NNX='O_(1)9'  TYPE='DYZ' !END
+  !END
+!END
+!EOB

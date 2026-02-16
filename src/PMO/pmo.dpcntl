@@ -1,22 +1,21 @@
-!dpcntl
-   emin[ev]=-7. emax[ev]=19. ymin=-15. ymax=20.
-
-   !graph prefix='Dos/' 
-     !set id='total' color='black' !end
-     !set id='mneg_up'  color='yellow'  stack=F !end
-     !set id='mneg_dn'  color='grey'    stack=T !end
-     !set id='mnt2g_up' color='green'   stack=T !end
-     !set id='mnt2g_dn' color='grey'    stack=T !end
-     !set id='prf_up'   color='magenta' stack=T !end
-     !set id='prf_dn'   color='grey'    stack=T !end
-     !set id='prd_up'   color='orange'  stack=T !end
-     !set id='prd_dn'   color='grey'    stack=T !end
-     !set id='os'       color='yellow'  stack=T !end
-     !set id='op'       color='red'     stack=T !end
-     !set id='prp_up'   color='cyan'  stack=T !end
-     !set id='prp_dn'   color='cyan'    stack=T !end
-     !set id='prs_up'   color='cyan'  stack=T !end
-     !set id='prs_dn'   color='cyan'    stack=T !end
-   !end
-!end
-!eob
+!DPCNTL
+   EMIN[EV]=-7. EMAX[EV]=19. YMIN=-15. YMAX=20.
+   !GRAPH PREFIX='Dos/' 
+     !SET ID='total'    COLOR='BLACK' !END
+     !SET ID='mneg_up'  COLOR='YELLOW'  STACK=F !END
+     !SET ID='mneg_dn'  COLOR='GREY'    STACK=T !END
+     !SET ID='mnt2g_up' COLOR='GREEN'   STACK=T !END
+     !SET ID='mnt2g_dn' COLOR='GREY'    STACK=T !END
+     !SET ID='prf_up'   COLOR='MAGENTA' STACK=T !END
+     !SET ID='prf_dn'   COLOR='GREY'    STACK=T !END
+     !SET ID='prd_up'   COLOR='ORANGE'  STACK=T !END
+     !SET ID='prd_dn'   COLOR='GREY'    STACK=T !END
+     !SET ID='os'       COLOR='YELLOW'  STACK=T !END
+     !SET ID='op'       COLOR='RED'     STACK=T !END
+     !SET ID='prp_up'   COLOR='CYAN'    STACK=T !END
+     !SET ID='prp_dn'   COLOR='CYAN'    STACK=T !END
+     !SET ID='prs_up'   COLOR='CYAN'    STACK=T !END
+     !SET ID='prs_dn'   COLOR='CYAN'    STACK=T !END
+   !END
+!END
+!EOB

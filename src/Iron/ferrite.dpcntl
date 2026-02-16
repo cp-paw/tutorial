@@ -1,10 +1,10 @@
-!dpcntl
-  emin[ev]=10. emax[ev]=30. ymin=-2.5 ymax=2.5  
-  !graph prefix='Dos/' scale=1.
-    !set id='total'   color='black'   !end
-    !set id='fe_eg'   color='green'  stack=F !end
-    !set id='fe_t2g'  color='yellow' stack=T !end
-    !set id='fe_sp'   color='cyan'   stack=T  !end
-  !end
-!end
-!eob
+!DPCNTL
+  EMIN[EV]=10. EMAX[EV]=30. YMIN=-2.5 YMAX=2.5  
+  !GRAPH PREFIX='Dos/' SCALE=1.
+    !SET ID='total'   COLOR='BLACK'   !END
+    !SET ID='fe_eg'   COLOR='GREEN'  STACK=F !END
+    !SET ID='fe_t2g'  COLOR='YELLOW' STACK=T !END
+    !SET ID='fe_sp'   COLOR='CYAN'   STACK=T  !END
+  !END
+!END
+!EOB
