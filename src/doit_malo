@@ -80,12 +80,7 @@ cp ${SRCDIR}/${ROOTNAME}_aimd_1.cntl ${ROOTNAME}.cntl
 runpaw 'aimd_1'
 paw_checkpoint -c C_Malonaldehyde_aimd_1
 
-echo "Analyze trajectory (1)" >> ${LOG}
-cp ${SRCDIR}/${ROOTNAME}_3.tcntl ${ROOTNAME}.tcntl
-paw_tra ${ROOTNAME}.tcntl
-
-echo "Analyze trajectory (2)" >> ${LOG}
-cp ${SRCDIR}/${ROOTNAME}_big.tcntl ${ROOTNAME}.tcntl
+echo "Analyze trajectory" >> ${LOG}
 paw_tra ${ROOTNAME}.tcntl
 
 # gracebat -nosafe -hardcopy -batch bfile
