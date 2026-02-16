@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 export THISDIR=$(pwd)
 if [[ ! $0  -ef ${THISDIR}/src/doit_pmo ]] ; then
   echo 'error in $0: must be called from parent directory'
@@ -7,6 +8,7 @@ fi
 export NCORE=14   # number of cores available
 export LOG=${THISDIR}/log_pmo
 export STPDIR=${THISDIR}/src/Setups
+export SRCDIR=${THISDIR}/src/PMO/
 echo "========= new call of doit_pmo at $(date)==========" >> ${LOG}
 
 ## encapsulate the paw command
@@ -28,7 +30,6 @@ function runpaw () {
 ## PMO
 ##############################################################################
 export ROOTNAME=pmo
-export SRCDIR=${THISDIR}/src/PMO/
 export DIR=PMO
 if [[ ! -d $DIR ]] ; then mkdir $DIR ; fi
 cd $DIR

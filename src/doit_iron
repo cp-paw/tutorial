@@ -1,14 +1,14 @@
 #!/bin/bash
-#set -v
+set -x
 export THISDIR=$(pwd)
 if [[ ! $0  -ef ${THISDIR}/src/doit_iron ]] ; then
   echo 'error in $0: must be called from parent directory'
   exit 1
 fi
 export NCORE=14   # number of cores available
-export LOG=${THISDIR}/log
-export SRCDIR=${THISDIR}/src/Iron
+export LOG=${THISDIR}/log_iron
 export STPDIR=${THISDIR}/src/Setups
+export SRCDIR=${THISDIR}/src/Iron
 #
 # conversion of pressure units #########################################
 Pa=$(echo "1 / (2.9421015697 * 10^13)" | bc -l)
