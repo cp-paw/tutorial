@@ -1,5 +1,5 @@
 !DPCNTL
-   EMIN[EV]=-7. EMAX[EV]=19. YMIN=-15. YMAX=20.
+   EMIN[EV]=-7. EMAX[EV]=21. YMIN=-15. YMAX=15.
    !GRAPH PREFIX='Dos/' 
      !SET ID='total'    COLOR='BLACK' !END
      !SET ID='mneg_up'  COLOR='YELLOW'  STACK=F !END
@@ -13,9 +13,9 @@
      !SET ID='os'       COLOR='YELLOW'  STACK=T !END
      !SET ID='op'       COLOR='RED'     STACK=T !END
      !SET ID='prp_up'   COLOR='CYAN'    STACK=T !END
-     !SET ID='prp_dn'   COLOR='CYAN'    STACK=T !END
+     !SET ID='prp_dn'   COLOR='GREY'    STACK=T !END
      !SET ID='prs_up'   COLOR='CYAN'    STACK=T !END
-     !SET ID='prs_dn'   COLOR='CYAN'    STACK=T !END
+     !SET ID='prs_dn'   COLOR='GREY'    STACK=T !END
    !END
 !END
 !EOB
