@@ -43,7 +43,7 @@ export FIGDIR=${THISDIR}/${FIGDIR}
 if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
 echo "before ${FIG}"
 
-xmgrace -free -noask \
+gracebat -free -noask \
         o5-h8.dat o6-h8.dat o5-o6.dat dbn.dat \
         -world 0.5 -0.7 10.5 5.5 \
         -hdevice PNG \
@@ -62,7 +62,7 @@ export FIG=$(echo "${FIGDIR}" | tr '[:upper:]' '[:lower:]')
 export FIGDIR=${THISDIR}/${FIGDIR}
 if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
 echo "before ${FIG}"
-xmgrace -free -noask \
+gracebat -free -noask \
         c3o2h4_t_all_noretard.dat  \
         c3o2h4_t_o.dat c3o2h4_t_h.dat c3o2h4_t_c.dat \
         c3o2h4_t_all.dat \
@@ -97,7 +97,7 @@ echo "before ${FIG}"
 
 for X in Ferrite Hexaferrum ; do
   ROOTNAME=$(echo "$X" | tr '[:upper:]' '[:lower:]')
-
+  unset TMPDIR
   export TMPDIR=$(mktemp -d)
   if [[ ! -d ${TMPDIR} ]] ; then  
     echo "error in $0: failed to create tempdir"
@@ -113,7 +113,7 @@ for X in Ferrite Hexaferrum ; do
   mkdir ${TMPDIR}/Dos
   paw_dos ${ROOTNAME}.dcntl 1>dos.out 2>&1 
   paw_dosplot ${ROOTNAME}.dpcntl 1>dosplot.out 2>&1
-  xmgrace -free -nosafe \
+  gracebat -free -nosafe \
           -batch ${ROOTNAME}.bat \
           -hdevice PNG -hardcopy \
           -printfile ${FIGDIR}/${ROOTNAME}_dos.png \
@@ -202,7 +202,7 @@ export FIGDIR=${THISDIR}/${FIGDIR}
 if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
 echo "before ${FIG}"
 
-xmgrace -free -noask \
+gracebat -free -noask \
          tangent.dat \
          ${THISDIR}/ferrite_murn.dat \
          ${THISDIR}/hexaferrum_murn.dat \
@@ -225,7 +225,7 @@ export FIGDIR=${THISDIR}/${FIGDIR}
 if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
 echo "before ${FIG}"
 
-xmgrace  -free -noask \
+gracebat  -free -noask \
          enthalpy_tangent.dat \
          enthalpy_ferrite_murn.dat \
          enthalpy_hexaferrum_murn.dat \
@@ -258,7 +258,7 @@ export FIGDIR=${THISDIR}/${FIGDIR}
 if [[ ! -d ${FIGDIR} ]] ; then mkdir ${FIGDIR} ; fi
 echo "before ${FIG}"
 
-
+unset TMPDIR
 export TMPDIR=$(mktemp -d)
 if [[ ! -d ${TMPDIR} ]] ; then  
   echo "error in $0: failed to create tempdir"
@@ -276,7 +276,7 @@ if [[ ! -d $DIR ]] ; then echo "error in $0: $DIR does not exist"; exit 1 ; fi
 if [[ ! -d Dos ]] ; then mkdir Dos; fi
 paw_dos.x ${ROOTNAME}.dcntl
 paw_dosplot.x ${ROOTNAME}.dpcntl
-xmgrace -free -nosafe \
+gracebat -free -nosafe \
         -batch ${ROOTNAME}.bat \
         -hdevice PNG -hardcopy \
         -printfile ${FIGDIR}/${FIG}.png \
