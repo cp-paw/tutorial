@@ -63,7 +63,7 @@ cp ${SRCDIR}/${ROOTNAME}.dpcntl ${ROOTNAME}.dpcntl
 mkdir ./Dos
 paw_dos ${ROOTNAME}.dcntl 1>out 2>&1 
 paw_dosplot ${ROOTNAME}.dpcntl 1>out 2>&1
-gracebat -nosafe -hdevice PDF -batch c3o2h4.bat -hardcopy -printfile c3o2h4_dos.pdf
+gracebat -nosafe -hdevice PNG -batch c3o2h4.bat -hardcopy -printfile c3o2h4_dos.png
 ## construct sprot file and structure files for viewing
 echo " calculating structure for ${ROOTNAME} " >> ${LOG}
 paw_strc -m ${ROOTNAME} 
