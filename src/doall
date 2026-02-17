@@ -6,7 +6,7 @@ if [[ ! $0  -ef ${THISDIR}/src/doall ]] ; then
   exit 1
 fi
 
-src/doit_malo
-src/doit_iron
-src/doit_pmo
-src/doit_analyze
+bash src/doit_malo
+bash src/doit_iron
+bash src/doit_pmo
+bash src/doit_analyze
