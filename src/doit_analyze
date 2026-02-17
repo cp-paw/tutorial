@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 export THISDIR=$(pwd)
 
 if [[ ! $0  -ef ${THISDIR}/src/doit_analyze ]] ; then
