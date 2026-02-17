@@ -256,6 +256,8 @@ gracebat -free -noask \
         -pexec "yaxis tick major 0.01" \
         -pexec "yaxis tick minor 0.001" \
         -pexec "yaxis ticklabel angle 90" \
+        -pexec "yaxis ticklabel format decimal" \
+        -pexec "yaxis ticklabel prec 2" \
         -pexec "xaxis label \"V[a\\s0\\N\\h{-0.4}\\S3\\N]\"" \
         -pexec "yaxis label \"E[H]\"" \
         -hdevice PNG \
@@ -301,6 +303,8 @@ gracebat  -free -noask \
         -pexec "yaxis tick major 0.01" \
         -pexec "yaxis tick minor 0.001" \
         -pexec "yaxis ticklabel angle 90" \
+        -pexec "yaxis ticklabel format decimal" \
+        -pexec "yaxis ticklabel prec 2" \
         -pexec "xaxis label \"V[a\\s0\\N\\h{-0.4}\\S3\\N]\"" \
         -pexec "yaxis label \"(E+p\\sc\\NV)[H]\"" \
         -hdevice PNG \
