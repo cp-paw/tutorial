@@ -46,7 +46,23 @@ echo "before ${FIG}"
 gracebat -free -noask \
         o5-h8.dat o6-h8.dat o5-o6.dat dbn.dat \
         -world 0.5 -0.7 10.5 5.5 \
+        -pexec "s0 line color 1" \
+        -pexec "s1 line color 2" \
+        -pexec "s2 line color 4" \
+        -pexec "s3 line color 3" \
+        -pexec "RUNAVG(s0, 1000)" \
+        -pexec "RUNAVG(s1, 1000)" \
+        -pexec "RUNAVG(s2, 1000)" \
+        -pexec "RUNAVG(s3, 1000)" \
+        -pexec "s4 line color 0" \
+        -pexec "s5 line color 0" \
+        -pexec "s6 line color 0" \
+        -pexec "s7 line color 0" \
+        -pexec "xaxis tick major 1.0" \
+        -pexec "xaxis label \"t[psec]\"" \
+        -pexec "yaxis label \"x[a]\"" \
         -hdevice PNG \
+        -fixed 2400 1800 \
         -printfile ${FIGDIR}/${FIG}.png \
         -hardcopy \
         -saveall ${FIGDIR}/${FIG}.agr 
@@ -67,7 +83,17 @@ gracebat -free -noask \
         c3o2h4_t_o.dat c3o2h4_t_h.dat c3o2h4_t_c.dat \
         c3o2h4_t_all.dat \
         -world 0. 0 12 500 \
+        -pexec "s0 line color 14" \
+        -pexec "s1 line color 2" \
+        -pexec "s2 line color 10" \
+        -pexec "s3 line color 4" \
+        -pexec "s4 line color 1" \
+        -pexec "xaxis tick major 1.0" \
+        -pexec "yaxis tick major 100.0" \
+        -pexec "xaxis label \"t[psec]\"" \
+        -pexec "yaxis label \"T[K]\"" \
         -hdevice PNG \
+        -fixed 2400 1800 \
         -printfile ${FIGDIR}/${FIG}.png \
         -hardcopy \
         -saveall ${FIGDIR}/${FIG}.agr 
