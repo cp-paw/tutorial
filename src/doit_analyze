@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+export LC_NUMERIC=C
 export THISDIR=$(pwd)
 
 if [[ ! $0  -ef ${THISDIR}/src/doit_analyze ]] ; then
@@ -235,6 +236,28 @@ gracebat -free -noask \
          ${THISDIR}/Ferrite/Scanlat/latscan.dat \
          ${THISDIR}/Hexaferrum/Scanlat/latscan_half.dat \
         -world 60. -22.015 90 -21.99 \
+        -pexec "s0 line color 1" \
+        -pexec "s1 line color 3" \
+        -pexec "s2 line color 2" \
+        -pexec "s3 symbol 1" \
+        -pexec "s3 symbol color 3" \
+        -pexec "s3 symbol size 0.5" \
+        -pexec "s3 symbol fill pattern 1" \
+        -pexec "s3 symbol fill color 3" \
+        -pexec "s3 line type 0" \
+        -pexec "s4 symbol 1" \
+        -pexec "s4 symbol color 2" \
+        -pexec "s4 symbol size 0.5" \
+        -pexec "s4 symbol fill pattern 1" \
+        -pexec "s4 symbol fill color 2" \
+        -pexec "s4 line type 0" \
+        -pexec "xaxis tick major 5.0" \
+        -pexec "xaxis tick minor 1.0" \
+        -pexec "yaxis tick major 0.01" \
+        -pexec "yaxis tick minor 0.001" \
+        -pexec "yaxis ticklabel angle 90" \
+        -pexec "xaxis label \"V[a\\s0\\N\\h{-0.4}\\S3\\N]\"" \
+        -pexec "yaxis label \"E[H]\"" \
         -hdevice PNG \
         -printfile ${FIGDIR}/${FIG}.png \
         -hardcopy \
@@ -258,6 +281,28 @@ gracebat  -free -noask \
          enthalpy_ferrite_latscan.dat \
          enthalpy_hexaferrum_latscan.dat \
         -world 60. -21.975 90 -21.950 \
+        -pexec "s0 line color 1" \
+        -pexec "s1 line color 3" \
+        -pexec "s2 line color 2" \
+        -pexec "s3 symbol 1" \
+        -pexec "s3 symbol color 3" \
+        -pexec "s3 symbol size 0.5" \
+        -pexec "s3 symbol fill pattern 1" \
+        -pexec "s3 symbol fill color 3" \
+        -pexec "s3 line type 0" \
+        -pexec "s4 symbol 1" \
+        -pexec "s4 symbol color 2" \
+        -pexec "s4 symbol size 0.5" \
+        -pexec "s4 symbol fill pattern 1" \
+        -pexec "s4 symbol fill color 2" \
+        -pexec "s4 line type 0" \
+        -pexec "xaxis tick major 5.0" \
+        -pexec "xaxis tick minor 1.0" \
+        -pexec "yaxis tick major 0.01" \
+        -pexec "yaxis tick minor 0.001" \
+        -pexec "yaxis ticklabel angle 90" \
+        -pexec "xaxis label \"V[a\\s0\\N\\h{-0.4}\\S3\\N]\"" \
+        -pexec "yaxis label \"(E+p\\sc\\NV)[H]\"" \
         -hdevice PNG \
         -printfile ${FIGDIR}/${FIG}.png \
         -hardcopy \
