@@ -105,7 +105,7 @@ if [[ ${WAVE} = 'T' ]] ; then
   echo " calculating wave functions for ${ROOTNAME} " >> ${LOG}
   cp ${SRCDIR}/${ROOTNAME}_analyze_1.cntl ${ROOTNAME}.cntl
   runpaw 'analyze_1'
-  cp ${SRCDIR}/${ROOTNAME}_1.wcntl ${ROOTNAME}.wcntl
+  cp ${SRCDIR}/${ROOTNAME}.wcntl ${ROOTNAME}.wcntl
   paw_wave ${ROOTNAME}.wcntl 1>out 2>&1
   paw_checkpoint -c C_PMO_collect
 fi
