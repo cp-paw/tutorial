@@ -5,7 +5,7 @@ if [[ ! $0  -ef ${THISDIR}/src/doit_malo ]] ; then
   echo 'error in $0: must be called from parent directory'
   exit 1
 fi
-export NCORE=14   # number of cores available
+export NCORE=6   # number of cores (too high can lead to crashes)
 export LOG=${THISDIR}/log_malo
 export STPDIR=${THISDIR}/src/Setups
 export SRCDIR=${THISDIR}/src/Malo/
