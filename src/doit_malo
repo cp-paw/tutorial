@@ -82,6 +82,7 @@ runpaw 'aimd_1'
 paw_checkpoint -c C_Malonaldehyde_aimd_1
 
 echo "Analyze trajectory" >> ${LOG}
+cp ${SRCDIR}/${ROOTNAME}.tcntl ${ROOTNAME}.tcntl
 paw_tra ${ROOTNAME}.tcntl
 
 # gracebat -nosafe -hardcopy -batch bfile
