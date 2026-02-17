@@ -8,7 +8,7 @@
     !POTENTIAL FILE='potential.wv' !END
   !END
   !FILES 
-    !file ID='RESTART_OUT' EXT=F NAME='/dev/null' !END
+    !FILE ID='RESTART_OUT' EXT=F NAME='/dev/null' !END
   !END
 !END
 !EOB
