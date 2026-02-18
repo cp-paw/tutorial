@@ -60,7 +60,7 @@ if [[ ${URLX2} = 'T' ]] ; then
   ##   relax wave functions without orbpot
   rm ${ROOTNAME}.cntl
   cp ${SRCDIR}/${ROOTNAME}_urlx_2.cntl ${ROOTNAME}.cntl
-  paw_resolve -i ${SRCDIR}/${ROOTNAME}_1.strc \
+  paw_resolve -i ${SRCDIR}/${ROOTNAME}_2.strc \
               -o ${ROOTNAME}.strc \
               -f praseodymium=${STPDIR}/pr.stp \
               -f manganese=${STPDIR}/mn.stp \
